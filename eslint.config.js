@@ -3,7 +3,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import tailwind from "eslint-plugin-tailwindcss";
+import tailwind from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 
 export default [
@@ -35,8 +35,9 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },
-  ...tailwind.configs["flat/recommended"],
+  ...tailwind.configs['flat/recommended'],
   eslintPluginPrettierRecommended,
 ];

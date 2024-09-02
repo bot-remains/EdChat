@@ -1,7 +1,5 @@
 function SignIn() {
-  return (
-    <div>SignIn</div>
-  )
+  return <div>SignIn</div>;
 }
 
-export default SignIn
+export default SignIn;
