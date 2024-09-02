@@ -1,10 +1,10 @@
-import { Spinner as spinner } from '@/components/ui/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import Chat from './Pages/Chat';
-import ErrorPage from './Pages/ErrorPage';
+import Contact from './Pages/Contact';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import Root from './Pages/Root';
@@ -15,8 +15,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    errorElement: <ErrorPage />,
-    loader: spinner,
+    loader: Spinner,
     children: [
       {
         path: '',
@@ -37,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: 'chat',
         element: <Chat />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
       },
     ],
   },
