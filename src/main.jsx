@@ -1,4 +1,4 @@
-import { Spinner as spinner } from '@/components/ui/spinner';
+import { Spinner as spinner } from '@/Components/ui/Spinner';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
