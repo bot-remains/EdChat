@@ -40,7 +40,7 @@ function SignIn() {
         body={
           <CustomFormWrapper
             form={form}
-            onSubmit={onSubmit}
+            onSubmit={submitForm}
             fields={
               <>
                 <CustomFormField
