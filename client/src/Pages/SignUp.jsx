@@ -6,17 +6,19 @@ import CustomFormField from '@/Components/ui/Custom/CustomFormField';
 import CustomFormWrapper from '@/Components/ui/Custom/CustomFormWrapper';
 import Wrapper from '@/Components/ui/Custom/wrapper';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 const formSchema = z.object({
   email: z.string().email({ message: "That's not an email" }),
-  password: z.string().min(8, { message: 'Too short' }),
-  confirmPassword: z.string().min(8, { message: 'Too short' }),
+  password: z.string().min(8, { message: 'Password too short' }),
+  confirmPassword: z.string().min(8, { message: 'Password too short' }),
 });
 
-function SignIn() {
+function SignUp() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -25,11 +27,31 @@ function SignIn() {
       confirmPassword: '',
     },
   });
-  const { isSubmitting } = form.formState;
+  const { isSubmitting, errors } = form.formState;
+
+  const mutation = useMutation(
+    (data) => axios.post('http://localhost:3000/api/v1/auth/sign-up', data),
+    {
+      onSuccess: (data) => {
+        console.log('Sign up successful:', data);
+      },
+      onError: (error) => {
+        console.error('Sign up error:', error.response?.data || error.message);
+        if (error.response?.data?.errors) {
+          error.response.data.errors.forEach((err) => {
+            form.setError(err.field, { message: err.message });
+          });
+        }
+      },
+    },
+  );
 
   async function onSubmit(data) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+    if (data.password !== data.confirmPassword) {
+      form.setError('confirmPassword', { message: 'Passwords do not match' });
+      return;
+    }
+    mutation.mutate(data);
   }
 
   return (
@@ -40,7 +62,7 @@ function SignIn() {
         body={
           <CustomFormWrapper
             form={form}
-            onSubmit={submitForm}
+            onSubmit={form.handleSubmit(onSubmit)}
             fields={
               <>
                 <CustomFormField
@@ -49,6 +71,7 @@ function SignIn() {
                   name="email"
                   label="Email"
                   placeholder="Email address"
+                  error={errors.email?.message}
                 />
                 <CustomFormField
                   control={form.control}
@@ -56,7 +79,7 @@ function SignIn() {
                   name="password"
                   label="Password"
                   placeholder="********"
-                  password
+                  error={errors.password?.message}
                 />
                 <CustomFormField
                   control={form.control}
@@ -64,6 +87,7 @@ function SignIn() {
                   name="confirmPassword"
                   label="Confirm Password"
                   placeholder="********"
+                  error={errors.confirmPassword?.message}
                 />
               </>
             }
@@ -72,9 +96,11 @@ function SignIn() {
                 type="submit"
                 className="w-full"
                 size="lg"
-                disabled={isSubmitting}
+                disabled={isSubmitting || mutation.isLoading}
               >
-                {isSubmitting ? 'Loading...' : 'Sign Up'}
+                {isSubmitting || mutation.isLoading ?
+                  'Creating account...'
+                : 'Sign Up'}
               </Button>
             }
           />
@@ -96,4 +122,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;
