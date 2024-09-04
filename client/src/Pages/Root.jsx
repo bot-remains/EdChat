@@ -6,7 +6,6 @@ export default function Root() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools /> */}
       <div>
         {location.pathname === '/sign-in' || location.pathname === '/sign-up' ?
           null

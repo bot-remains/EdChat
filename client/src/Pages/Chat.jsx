@@ -3,6 +3,7 @@ import { Button } from '@/Components/ui/Button';
 import { Input } from '@/Components/ui/Input';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Link } from 'react-router-dom';
+import '../assets/css/chat.css';
 
 function Chat() {
   return (
@@ -19,15 +20,10 @@ function Chat() {
         >
           <div className="flex h-full flex-col">
             <h2 className="mb-4 text-xl font-bold">EdChat</h2>
-            <div className="flex flex-col gap-3 overflow-y-auto">
-              {[...Array(15)].map((_, index) => (
-                <Link
-                  key={index}
-                  className="rounded-md bg-[#604CC3] p-2 mr-10 text-white"
-                >
-                  Heading
-                </Link>
-              ))}
+            <div className="flex flex-col gap-3 overflow-y-auto pr-1">
+              <Link className="rounded-md bg-[#604CC3] p-2  text-white">
+                Heading
+              </Link>
             </div>
           </div>
         </Panel>
@@ -35,7 +31,7 @@ function Chat() {
         <PanelResizeHandle className="cursor-col-resize" />
 
         {/* Right-side Panel - Chat Section and Input Field */}
-        <Panel className="flex flex-col bg-extend-grayscale-50 p-4 px-16">
+        <Panel className="flex h-[calc(100%-64px)] flex-col bg-extend-grayscale-50  p-4 px-16">
           {/* Chat Section - Scrollable */}
           <div className="mb-4 grow overflow-y-auto">
             <div className="flex flex-col gap-3 overflow-y-auto">
@@ -47,36 +43,6 @@ function Chat() {
               </div>
               <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
                 <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Just working on a project.</p>
-              </div>
-              <div className="max-w-xs self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-[#604CC3] p-3 text-white shadow-md">
-                <p>Fuck</p>
-              </div>
-              <div className="rounded-lb-none max-w-xs self-start rounded-r-xl rounded-tl-xl bg-white p-3 shadow-md">
-                <p>Doing well. What are you up to?</p>
               </div>
               <div className="rounded-lb-none max-w-xs self-start rounded-r-xl rounded-tl-xl bg-white p-3 shadow-md">
                 <p>Doing well. What are you up to?</p>

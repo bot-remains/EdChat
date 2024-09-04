@@ -6,6 +6,7 @@ import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { corsOptions } from './corsOptions.js';
 import connectDB from './src/db/connectDB.js';
 
 dotenv.config();
@@ -16,8 +17,8 @@ const __dirname = path.dirname(__filename);
 
 export const appConfig = () => {
   app
-    // .use(cors(corsOptions))
-    .use(cors())
+    .use(cors(corsOptions))
+    // .use(cors())
     .use(express.json())
     .use(morgan('dev'))
     .use(bodyParser.json())

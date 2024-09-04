@@ -7,23 +7,6 @@
   }
 }
 
-/* Scrollbar styling */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #604cc3 #e2e8f0; /* thumb color, track color */
-}
-
-/* For WebKit-based browsers */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #604cc3;
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background-color: #e2e8f0; /* Adjust the track color */
+::-webkit-scrollbar {
+  width: 0px;
 }
