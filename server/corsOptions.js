@@ -1,6 +1,12 @@
 export const corsOptions = {
-  origin: 'http://example.com',
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Methods',
+  ],
   credentials: true,
 };

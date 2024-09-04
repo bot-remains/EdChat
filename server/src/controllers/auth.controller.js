@@ -7,9 +7,9 @@ import setToken from './../utils/setToken.utils.js';
 
 // Sign Up: Handles user registration
 export const signUp = AsyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
   console.log(req.body);
-  if (!username || !email || !password) {
+  if (!email || !password) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
@@ -20,7 +20,7 @@ export const signUp = AsyncHandler(async (req, res) => {
     return res.status(409).json(new ApiError(409, 'Email already in use'));
   }
 
-  const newUser = new User({ username, email, password });
+  const newUser = new User({ email, password });
   await newUser.save();
 
   const accessToken = setToken(req, newUser);
@@ -40,9 +40,9 @@ export const signUp = AsyncHandler(async (req, res) => {
 });
 
 // Sign In: Handles user login
-// Sign In: Handles user login
 export const signIn = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
   const user = await User.findOne({ email });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -51,11 +51,11 @@ export const signIn = AsyncHandler(async (req, res) => {
 
   const accessToken = setToken(req, user);
 
-  const hundredYearsInMilliseconds = 100 * 365.25 * 24 * 60 * 60 * 1000;
+  // const hundredYearsInMilliseconds = 100 * 365.25 * 24 * 60 * 60 * 1000;
   res
     .cookie('userCookie', accessToken, {
       httpOnly: true,
-      maxAge: hundredYearsInMilliseconds,
+      // maxAge: hundredYearsInMilliseconds,
     })
     .status(200)
     .json({
