@@ -29,7 +29,7 @@ function SignIn() {
   const { isSubmitting } = form.formState;
 
   const mutation = useMutation(
-    async (data) => {
+    async (data) =>
       // const response = await fetch(
       //   'http://localhost:3000/api/v1/auth/sign-in',
       //   {
@@ -41,22 +41,14 @@ function SignIn() {
       //     credentials: 'same-origin',
       //   },
       // );
-
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/auth/sign-in',
-        data,
-        {
-          withCredentials: true,
-        },
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to sign in');
-      }
-
-      return response.json();
-    },
+      await axios.post('http://localhost:3000/api/v1/auth/sign-in', data, {
+        withCredentials: true,
+      }),
+    // if (!response.ok) {
+    //   const errorData = await response.json();
+    //   throw new Error(errorData.message || 'Failed to sign in');
+    // }
+    // return response.json();
     {
       onSuccess: (data) => {
         console.log('Login successful:', data);
@@ -68,6 +60,7 @@ function SignIn() {
   );
 
   async function onSubmit(data) {
+    console.log(data);
     mutation.mutate(data);
   }
 
