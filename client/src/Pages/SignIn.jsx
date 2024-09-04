@@ -6,14 +6,16 @@ import CustomFormField from '@/Components/ui/Custom/CustomFormField';
 import CustomFormWrapper from '@/Components/ui/Custom/CustomFormWrapper';
 import Wrapper from '@/Components/ui/Custom/wrapper';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
+
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 const formSchema = z.object({
   email: z.string().email({ message: "That's not an email" }),
   password: z.string().min(8, { message: 'Too short' }),
-  confirmPassword: z.string().min(8, { message: 'Too short' }),
 });
 
 function SignIn() {
@@ -22,21 +24,58 @@ function SignIn() {
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: '',
     },
   });
   const { isSubmitting } = form.formState;
 
+  const mutation = useMutation(
+    async (data) => {
+      // const response = await fetch(
+      //   'http://localhost:3000/api/v1/auth/sign-in',
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(data),
+      //     credentials: 'same-origin',
+      //   },
+      // );
+
+      const response = await axios.post(
+        'http://localhost:3000/api/v1/auth/sign-in',
+        data,
+        {
+          withCredentials: true,
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to sign in');
+      }
+
+      return response.json();
+    },
+    {
+      onSuccess: (data) => {
+        console.log('Login successful:', data);
+      },
+      onError: (error) => {
+        console.error('Login error:', error.message);
+      },
+    },
+  );
+
   async function onSubmit(data) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+    mutation.mutate(data);
   }
 
   return (
     <Wrapper>
       <CustomCard
-        title={<TypographyH1 text="Sign Up" />}
-        description="Create your account"
+        title={<TypographyH1 text="Sign In" />}
+        description="Login to your account"
         body={
           <CustomFormWrapper
             form={form}
@@ -58,13 +97,6 @@ function SignIn() {
                   placeholder="********"
                   password
                 />
-                <CustomFormField
-                  control={form.control}
-                  type="password"
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  placeholder="********"
-                />
               </>
             }
             button={
@@ -74,20 +106,20 @@ function SignIn() {
                 size="lg"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Loading...' : 'Sign Up'}
+                {isSubmitting ? 'Loading...' : 'Sign In'}
               </Button>
             }
           />
         }
         footer={
           <div className="flex justify-center">
-            <TypographyMuted text="Already have an account?" />
+            <TypographyMuted text="Don't have an account, yet?" />
             &nbsp;
             <Link
-              to="/sign-in"
+              to="/sign-up"
               className="underline"
             >
-              <TypographyMuted text="Sign In" />
+              <TypographyMuted text="Sign Up" />
             </Link>
           </div>
         }
