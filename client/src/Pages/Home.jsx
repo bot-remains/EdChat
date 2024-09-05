@@ -31,22 +31,21 @@ const Home = () => {
               {
                 title: 'Interactive Chatbot',
                 description:
-                  'Ask our chatbot anything! From finding the best schools in your district to understanding state educational policies, our virtual assistant has got you covered.',
+                  'Ask our chatbot anything! From finding the best institute in your district to understanding state educational policies.',
               },
               {
-                title: 'Explore Courses & Colleges',
+                title: 'Explore Colleges',
                 description:
-                  'Discover the best schools and colleges in Rajasthan, complete with details on courses, fees, and admissions.',
+                  'Discover the best colleges in Rajasthan, complete with details on courses, fees, and admissions.',
               },
               {
                 title: 'Educational Resources',
                 description:
-                  'Access a wide range of study materials and online resources to support your learning journey.',
+                  'Access a wide range of support for your learning journey.',
               },
               {
                 title: 'Updates & Notifications',
-                description:
-                  'Stay informed with the latest updates on exam schedules, results, and educational events in Rajasthan.',
+                description: 'Stay informed with the latest updates.',
               },
             ].map((feature, index) => (
               <Card
