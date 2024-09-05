@@ -7,10 +7,14 @@
   }
 }
 
-::-webkit-scrollbar {
-  width: 20px;
+@layer utilities {
+  .no-scroll {
+    background-color: blueviolet;
+    -ms-overflow-style: none;
+    overflow: hidden;
+  }
 }
 
-.no-scroll {
-  overflow: hidden;
+::-webkit-scrollbar {
+  width: 0px;
 }

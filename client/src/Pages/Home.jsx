@@ -1,16 +1,17 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { Card, CardContent, CardHeader } from '@/Components/ui/card';
 
 const Home = () => {
   return (
-    <div className="bg-gray-100 text-gray-900">
+    <div className="text-text bg-gray-100">
       <section
         className="relative flex h-screen items-center justify-center bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(/src/assets/college2.jpg)` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white">
+        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-extend-primary">
           <h1 className="text-5xl font-extrabold drop-shadow-md md:text-6xl">
-            Welcome to the EdChat
+            Welcome to the EduChat
           </h1>
           <p className="mt-4 text-lg font-light drop-shadow-md md:text-2xl">
             Your Gateway to Quality Education and Resources in Rajasthan
@@ -21,11 +22,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="bg-extend-primary py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-12 text-center text-4xl font-bold text-gray-800">
-            Features
-          </h2>
+          <h2 className="mb-12 text-center text-4xl font-bold ">Features</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
@@ -50,15 +49,15 @@ const Home = () => {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="rounded-lg border border-gray-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+                className="border-border rounded-lg border shadow-lg transition-shadow duration-300 hover:shadow-xl"
               >
-                <CardHeader className="border-b border-gray-200 p-6">
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    {feature.title}
-                  </h3>
+                <CardHeader className="border-border border-b p-6">
+                  <h3 className="text-xl font-semibold">{feature.title}</h3>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <p className="text-gray-600">{feature.description}</p>
+                  <p className="text-extend-secondaryText">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -66,12 +65,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-gray-50 py-16">
+      <section className="bg-extend-primary py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-center text-4xl font-bold text-gray-800">
+          <h2 className="mb-8 text-center text-4xl font-bold text-text">
             Education in Rajasthan
           </h2>
-          <p className="text-center text-lg leading-relaxed text-gray-700">
+          <p className="text-center text-lg leading-relaxed text-extend-secondaryText">
             Rajasthan is known for its rich cultural heritage and is committed
             to providing quality education to its students. From primary to
             higher education, the state offers a variety of opportunities for
@@ -82,9 +81,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="bg-extend-primary py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-12 text-center text-4xl font-bold text-gray-800">
+          <h2 className="mb-12 text-center text-4xl font-bold ">
             Student Testimonials
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -105,12 +104,14 @@ const Home = () => {
                 className="rounded-lg border border-gray-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
               >
                 <CardHeader className="border-b border-gray-200 p-6">
-                  <h3 className="text-xl font-semibold text-gray-800">
+                  <h3 className="text-xl font-semibold text-text">
                     {testimonial.name}
                   </h3>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <p className="text-gray-600">{testimonial.testimonial}</p>
+                  <p className="text-extend-secondaryText">
+                    {testimonial.testimonial}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -118,7 +119,7 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="bg-gray-800 py-8 text-white">
+      <footer className="bg-gray-800 py-8 text-extend-primary">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div>
             <h3 className="text-lg font-semibold">

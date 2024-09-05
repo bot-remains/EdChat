@@ -3,16 +3,16 @@ import CustomNavLink from './CustomNavLink';
 
 const Navbar = () => {
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-extend-primary shadow-md">
       <div className="px-28">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center space-x-28">
             <div className="shrink-0">
               <NavLink
                 to="/"
-                className="text-2xl font-bold text-gray-800"
+                className="text-2xl font-bold text-extend-text"
               >
-                EdChat
+                EduChat
               </NavLink>
             </div>
             <div className="space-x-8">
@@ -37,7 +37,7 @@ const Navbar = () => {
               </button>
             </Link>
             <Link to="/sign-up">
-              <button className="rounded-md bg-blue-500 px-4 py-2 font-medium text-white">
+              <button className="rounded-md bg-extend-secondary px-4 py-2 font-medium text-extend-primary hover:bg-extend-hoverSecondary">
                 Sign Up
               </button>
             </Link>

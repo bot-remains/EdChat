@@ -9,8 +9,8 @@ function CustomNavLink({ placeholder, route }) {
         `text-[18px] font-medium
         ${
           isActive ?
-            'text-blue-500 border-blue-500 border-b-2 '
-          : 'text-gray-700 hover:text-blue-500'
+            'text-extend-secondary border-extend-secondary border-b-2 '
+          : 'text-extend-text hover:text-extend-secondary'
         }`
       }
     >
