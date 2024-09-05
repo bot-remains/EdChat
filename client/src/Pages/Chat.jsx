@@ -1,8 +1,8 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { Button } from '@/Components/ui/Button';
-import { MarkdownRenderer } from '@/Components/ui/Custom/MarkDown';
+// import { MarkdownRenderer } from '@/Components/ui/Custom/MarkDown';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
@@ -13,6 +13,11 @@ function Chat() {
   const [loading, setLoading] = useState(false);
   const [conversationHistory, setConversationHistory] = useState([]);
 
+  const getUserCookie = () => {
+    const cookie = Cookies.get('userCookie');
+    console.log(cookie);
+  };
+
   const form = useForm({
     defaultValues: {
       statement: '',
@@ -21,42 +26,42 @@ function Chat() {
   const { isSubmitting } = form.formState;
 
   function onSubmit(data) {
-    setConversationHistory((history) => [...history, data.statement]);
-    form.reset({ statement: '' });
-    setLoading(true);
-
-    axios
-      .post('http://localhost:3000/api/v1/response', {
-        statement: data.statement,
-        conversationHistory,
-      })
-      .then((response) => {
-        setLoading(false);
-        setConversationHistory((history) => [
-          ...history,
-          response.data.message,
-        ]);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
+    // setConversationHistory((history) => [...history, data.statement]);
+    // form.reset({ statement: '' });
+    // setLoading(true);
+    // axios
+    //   .post('http://localhost:3000/api/v1/auth/sign-in', {
+    //     statement: data.statement,
+    //     conversationHistory,
+    //   })
+    //   .then((response) => {
+    //     setLoading(false);
+    //     setConversationHistory((history) => [
+    //       ...history,
+    //       response.data.message,
+    //     ]);
+    //   })
+    //   .catch((error) => {
+    //     setLoading(false);
+    //     console.log(error);
+    //   });
+    getUserCookie();
   }
 
   return (
     <wrapper>
-      <div className="flex h-screen">
+      <div className="no-scroll flex h-screen overflow-y-hidden">
         <PanelGroup
           direction="horizontal"
           className="w-full"
         >
           <Panel
-            className="h-[calc(100%-64px)] overflow-y-auto bg-gray-200 p-5"
+            className="h-[calc(100%-64px)]  overflow-y-hidden bg-gray-200 p-5"
             defaultSize={20}
             minSize={12}
             maxSize={20}
           >
-            <div className="flex h-[calc(100%-64px)] flex-col">
+            <div className="flex  flex-col">
               <div className="flex flex-col gap-3 overflow-y-auto pr-1">
                 <Link className="rounded-md bg-[#604CC3] p-2 text-white">
                   Heading
@@ -81,7 +86,7 @@ function Chat() {
                       : 'self-start rounded-r-xl rounded-bl-none rounded-tl-xl bg-white'
                     }`}
                   >
-                    <MarkdownRenderer markdown={message} />
+                    {/* <MarkdownRenderer markdown={message} /> */}
                   </div>
                 ))}
                 {loading && (
