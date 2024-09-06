@@ -1,4 +1,3 @@
-import { Spinner as spinner } from '@/Components/ui/Spinner';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -17,7 +16,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     errorElement: <ErrorPage />,
-    loader: spinner,
     children: [
       {
         path: '',
