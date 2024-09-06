@@ -1,17 +1,17 @@
 import Navbar from '@/Components/ui/Custom/navbar';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 export default function Root() {
-  const queryClient = new QueryClient();
+  const location = useLocation();
+
+  const shouldRenderNavbar = !['/sign-in', '/sign-up', '/chat'].includes(
+    location.pathname,
+  );
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <div>
-        {location.pathname === '/sign-in' || location.pathname === '/sign-up' ?
-          null
-        : <Navbar />}
-        <Outlet />
-      </div>
-    </QueryClientProvider>
+    <div>
+      {shouldRenderNavbar && <Navbar />}
+      <Outlet />
+    </div>
   );
 }

@@ -94,7 +94,7 @@ function SignUp() {
             button={
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-extend-secondary hover:bg-extend-hoverSecondary"
                 size="lg"
                 disabled={isSubmitting || mutation.isLoading}
               >

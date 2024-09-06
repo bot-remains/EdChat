@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 function CustomCard({ title, description, body, footer }) {
   return (
-    <Card className="w-1/4">
+    <Card className="w-1/4 ">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
