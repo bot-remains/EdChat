@@ -4,6 +4,15 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://edchat.onrender.com/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
+      },
+    },
+  },
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef

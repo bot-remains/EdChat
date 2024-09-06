@@ -2,7 +2,7 @@
   "routes": [
     {
       "src": "/api/v1/.*",
-      "dest": "index.js"
+      "dest": "https://edchat.onrender.com/api/v1/$1"
     },
     {
       "src": "/(.*)",

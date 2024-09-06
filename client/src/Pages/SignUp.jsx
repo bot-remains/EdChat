@@ -30,7 +30,7 @@ function SignUp() {
   const { isSubmitting, errors } = form.formState;
 
   const mutation = useMutation(
-    (data) => axios.post('http://localhost:3000/api/v1/auth/sign-up', data),
+    (data) => axios.post('/api/v1/auth/sign-up', data),
     {
       onSuccess: (data) => {
         console.log('Sign up successful:', data);

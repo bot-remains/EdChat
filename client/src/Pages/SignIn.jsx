@@ -42,7 +42,7 @@ function SignIn() {
       //     credentials: 'same-origin',
       //   },
       // );
-      await axios.post('http://localhost:3000/api/v1/auth/sign-in', data, {
+      await axios.post('/api/v1/auth/sign-in', data, {
         withCredentials: true,
       }),
     // if (!response.ok) {
