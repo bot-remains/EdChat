@@ -3,7 +3,7 @@ import { User } from '../models/user.model.js';
 import { ApiError } from '../utils/ApiError.utils.js';
 import { ApiResponse } from '../utils/ApiResponse.utils.js';
 import { AsyncHandler } from '../utils/AsyncHandler.utils.js';
-import setToken from '../utils/setToken.utils.js';
+import { setToken } from '../utils/setToken.utils.js';
 
 // Sign Up: Handles user registration
 export const signUp = AsyncHandler(async (req, res) => {
