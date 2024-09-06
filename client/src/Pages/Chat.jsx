@@ -1,5 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { Button } from '@/Components/ui/Button';
+import { Button } from '@/Components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import axios from 'axios';
 import { useState } from 'react';
