@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model.js';
 import { ApiError } from '../utils/ApiError.utils.js';
 import { ApiResponse } from '../utils/ApiResponse.utils.js';
 import { AsyncHandler } from '../utils/AsyncHandler.utils.js';
-import { setToken } from '../utils/setToken.js';
 
 // Sign Up: Handles user registration
 export const signUp = AsyncHandler(async (req, res) => {
@@ -72,3 +72,19 @@ export const logOut = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, 'User logged out successfully'));
 });
+
+const setToken = (req, newUser) => {
+  const { email, _id } = newUser;
+
+  const accessToken = jwt.sign(
+    {
+      user: { email, id: _id },
+    },
+    process.env.ACCESS_TOKEN,
+    { expiresIn: '1h' },
+  );
+
+  req.user = { email, id: _id };
+
+  return accessToken;
+};
