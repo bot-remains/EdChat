@@ -1,10 +1,10 @@
 {
-  "name": "EdChat",
+  "name": "EduChat",
   "version": "1.0.0",
-  "description": "Backend for EdChat application",
+  "description": "Backend for EduChat application",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "Ayush",
   "license": "MIT",

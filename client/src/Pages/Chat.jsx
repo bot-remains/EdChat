@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Link, NavLink } from 'react-router-dom';
-import '../assets/css/chat.css';
 
 function Chat() {
   const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ function Chat() {
     setLoading(true);
 
     axios
-      .post('https://educhatbot.onrender.com/api/v1/response', {
+      .post('http://localhost:4000/api/v1/response', {
         statement: data.statement,
         conversationHistory,
       })
@@ -82,7 +81,7 @@ function Chat() {
               {conversationHistory.map((message, idx) => (
                 <div
                   key={idx}
-                  className={`max-w-[70%] p-4 shadow-lg  ${
+                  className={`max-w-[70%] p-4 shadow-2xl  ${
                     message.role === 'user' ?
                       'self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-extend-secondary text-white'
                     : 'self-start rounded-r-xl rounded-bl-none rounded-tl-xl bg-extend-primary text-gray-800'

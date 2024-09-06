@@ -24,10 +24,10 @@ const Navbar = () => {
                 route="/chat"
                 placeholder="Chat"
               />
-              <CustomNavLink
+              {/* <CustomNavLink
                 route="/contact"
                 placeholder="Contact"
-              />
+              /> */}
             </div>
           </div>
           <div className="flex items-center space-x-4">
