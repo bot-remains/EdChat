@@ -1,8 +1,10 @@
+import { LineChart } from 'lucide-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
+import Analysis from './Pages/Analysis';
 import Chat from './Pages/Chat';
 import ErrorPage from './Pages/ErrorPage';
 import Home from './Pages/Home';
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
         path: 'chat',
         element: <Chat />,
       },
+      {
+        path: 'analysis',
+        element: <Analysis />,
+      },
+      {
+        path: 'bar',
+        element: <LineChart />,
+      },
     ],
   },
 ]);
@@ -48,6 +58,5 @@ createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <RouterProvider router={router} />
     </React.StrictMode>
-    ,
   </QueryClientProvider>,
 );

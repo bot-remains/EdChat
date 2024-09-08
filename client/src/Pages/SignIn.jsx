@@ -7,6 +7,7 @@ import CustomFormWrapper from '@/Components/ui/Custom/CustomFormWrapper';
 import Wrapper from '@/Components/ui/Custom/wrapper';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
@@ -31,28 +32,16 @@ function SignIn() {
 
   const mutation = useMutation(
     async (data) =>
-      // const response = await fetch(
-      //   'http://localhost:3000/api/v1/auth/sign-in',
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(data),
-      //     credentials: 'same-origin',
-      //   },
-      // );
       await axios.post('/api/v1/auth/sign-in', data, {
         withCredentials: true,
       }),
-    // if (!response.ok) {
-    //   const errorData = await response.json();
-    //   throw new Error(errorData.message || 'Failed to sign in');
-    // }
-    // return response.json();
     {
       onSuccess: (data) => {
-        console.log('Login successful:', data);
+        console.log('Login successful:', data.data.user.email);
+        Cookies.set('user', data.data.user.email, {
+          secure: true,
+          sameSite: 'None',
+        });
         navigate('/');
       },
       onError: (error) => {

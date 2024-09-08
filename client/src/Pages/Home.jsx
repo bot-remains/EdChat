@@ -3,28 +3,28 @@ import { Card, CardContent, CardHeader } from '@/Components/ui/card';
 
 const Home = () => {
   return (
-    <div className="text-text bg-gray-100">
+    <div className="bg-gray-100 text-text">
       <section
-        className="relative flex h-screen items-center justify-center bg-cover bg-center bg-no-repeat"
+        className="flex relative justify-center items-center h-screen bg-center bg-no-repeat bg-cover"
         style={{ backgroundImage: `url(/src/assets/college2.jpg)` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-extend-primary">
+        <div className="relative z-10 px-6 mx-auto max-w-4xl text-center text-extend-primary">
           <h1 className="text-5xl font-extrabold drop-shadow-md md:text-6xl">
             Welcome to the EduChat
           </h1>
           <p className="mt-4 text-lg font-light drop-shadow-md md:text-2xl">
             Your Gateway to Quality Education and Resources in Rajasthan
           </p>
-          {/* <Button className="mt-8 bg-extend-grayscale-900 text-lg p-5  font-semibold shadow-lg transition duration-300 hover:bg-blue-700">
+          {/* <Button className="p-5 mt-8 text-lg font-semibold shadow-lg transition duration-300 bg-extend-grayscale-900 hover:bg-blue-700">
             Chat with Our Virtual Assistant
           </Button> */}
         </div>
       </section>
 
-      <section className="bg-extend-primary py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-12 text-center text-4xl font-bold ">Features</h2>
+      <section className="py-16 bg-extend-primary">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-4xl font-bold text-center">Features</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
@@ -49,9 +49,9 @@ const Home = () => {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="border-border rounded-lg border shadow-lg transition-shadow duration-300 hover:shadow-xl"
+                className="rounded-lg border shadow-lg transition-shadow duration-300 border-border hover:shadow-xl"
               >
-                <CardHeader className="border-border border-b p-6">
+                <CardHeader className="p-6 border-b border-border">
                   <h3 className="text-xl font-semibold">{feature.title}</h3>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -65,12 +65,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-extend-primary py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-center text-4xl font-bold text-text">
+      <section className="py-16 bg-extend-primary">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <h2 className="mb-8 text-4xl font-bold text-center text-text">
             Education in Rajasthan
           </h2>
-          <p className="text-center text-lg leading-relaxed text-extend-secondaryText">
+          <p className="text-lg leading-relaxed text-center text-extend-secondaryText">
             Rajasthan is known for its rich cultural heritage and is committed
             to providing quality education to its students. From primary to
             higher education, the state offers a variety of opportunities for
@@ -81,9 +81,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-extend-primary py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-12 text-center text-4xl font-bold ">
+      <section className="py-16 bg-extend-primary">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-4xl font-bold text-center">
             Student Testimonials
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -103,7 +103,7 @@ const Home = () => {
                 key={index}
                 className="rounded-lg border border-gray-200 shadow-lg transition-shadow duration-300 hover:shadow-xl"
               >
-                <CardHeader className="border-b border-gray-200 p-6">
+                <CardHeader className="p-6 border-b border-gray-200">
                   <h3 className="text-xl font-semibold text-text">
                     {testimonial.name}
                   </h3>
@@ -119,8 +119,8 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="bg-gray-800 py-8 text-extend-primary">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <footer className="py-8 bg-gray-800 text-extend-primary">
+        <div className="flex justify-between items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div>
             <h3 className="text-lg font-semibold">
               Rajasthan Education System

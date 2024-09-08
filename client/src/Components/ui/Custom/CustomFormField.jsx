@@ -4,8 +4,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from '@/Components/ui/form';
+import { Input } from '@/Components/ui/input';
 import PropTypes from 'prop-types';
 
 function CustomFormField({ control, name, label, placeholder, type }) {
@@ -21,7 +21,7 @@ function CustomFormField({ control, name, label, placeholder, type }) {
               type={type}
               placeholder={placeholder}
               {...field}
-              className="p-5 text-[16px]"
+              className="p-5 border-extend-darkBorder text-[16px]"
             />
           </FormControl>
           <FormMessage />
