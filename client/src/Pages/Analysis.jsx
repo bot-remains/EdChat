@@ -1,4 +1,5 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable tailwindcss/classnames-order */
 import { Button } from '@/Components/ui/button';
 import {
@@ -16,46 +17,73 @@ import {
   PopoverTrigger,
 } from '@/Components/ui/popover';
 import { cn } from '@/lib/utils';
+import axios from 'axios';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import * as React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { branches, categories, colleges } from '../assets/data.js';
 import BarChart from '../Components/ui/Custom/BarChart.jsx';
 
 function Analysis() {
-  const [openCollege, setOpenCollege] = React.useState(false);
-  const [openBranch, setOpenBranch] = React.useState(false);
-  const [openCategory, setOpenCategory] = React.useState(false);
-  const [selectedCollege, setSelectedCollege] = React.useState(
+  const [openCollege, setOpenCollege] = useState(false);
+  const [openBranch, setOpenBranch] = useState(false);
+  const [selectedCollege, setSelectedCollege] = useState(
     'Rajasthan Institute of Technology',
   );
-  const [selectedBranch, setSelectedBranch] =
-    React.useState('Computer Science');
-  const [selectedCategory, setSelectedCategory] = React.useState('General');
+  const [selectedBranch, setSelectedBranch] = useState('Computer Science');
+  const [collegeData, setCollegeData] = useState(null);
 
-  const data = {
-    labels: ['2020', '2021', '2022', '2023'],
-    datasets: categories.map((category) => ({
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `/api/v1/college/${selectedCollege}/branch/${selectedBranch}`,
+        { withCredentials: true },
+      );
+      setCollegeData(response.data);
+      console.log(collegeData);
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+    }
+  }, [selectedCollege, selectedBranch]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const getDataset = (dataKey, labels, backgroundColors) => ({
+    labels,
+    datasets: categories.map((category, index) => ({
       label: category,
-      data: colleges[selectedCollege]?.[selectedBranch]?.[category] || [],
-      backgroundColor:
-        category === 'General' ? 'rgb(26, 0, 102)'
-        : category === 'OBC' ? 'rgba(54, 162, 235, 0.7)'
-        : 'rgba(255, 99, 132, 0.7)',
-      borderColor:
-        category === 'General' ? 'rgba(54, 162, 235, 1)'
-        : category === 'OBC' ? 'rgba(54, 162, 235, 1)'
-        : 'rgba(255, 99, 132, 1)',
+      data: collegeData?.[dataKey]?.[category] || [],
+      backgroundColor: backgroundColors[index],
+      borderColor: backgroundColors[index],
       borderWidth: 1,
     })),
-  };
+  });
+
+  const chartColors = [
+    'rgb(26, 0, 102)',
+    'rgba(54, 162, 235, 0.7)',
+    'rgba(255, 99, 132, 0.7)',
+  ];
+
+  const data = getDataset(
+    'cutoff',
+    ['2020', '2021', '2022', '2023'],
+    chartColors,
+  );
+  const seatData = getDataset(
+    'seats',
+    ['2020', '2021', '2022', '2023'],
+    chartColors,
+  );
 
   const placementData = {
-    labels: Object.keys(colleges[selectedCollege]),
+    labels: Object.keys(collegeData?.placements || {}),
     datasets: [
       {
-        data: Object.keys(colleges[selectedCollege]).map((branch) => {
-          const placement = colleges[selectedCollege][branch]?.Placement?.[0];
-          return placement ? parseFloat(placement.replace('%', '%')) : 0;
+        data: Object.keys(collegeData?.placements || {}).map((branch) => {
+          const placement = collegeData?.placements?.[branch]?.rate;
+          return placement ? parseFloat(placement.replace('%', '')) : 0;
         }),
         backgroundColor: [
           'rgba(255, 99, 132, 0.7)',
@@ -75,12 +103,13 @@ function Analysis() {
     ],
   };
 
-  const options = {};
-
   return (
-    <div className="p-6 mx-auto w-full">
-      <div className="flex flex-wrap gap-4 justify-between p-4">
-        {/* College Selection Popover */}
+    <div className="p-8 mx-auto max-w-screen">
+      <h1 className="mb-6 text-2xl font-bold text-center">
+        Details of {selectedCollege}
+      </h1>
+
+      <div className="flex flex-wrap gap-4">
         <Popover
           open={openCollege}
           onOpenChange={setOpenCollege}
@@ -129,78 +158,91 @@ function Analysis() {
             </Command>
           </PopoverContent>
         </Popover>
-
-        {/* Branch Selection Popover */}
-        <Popover
-          open={openBranch}
-          onOpenChange={setOpenBranch}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openBranch}
-              className="w-[300px] justify-between bg-gray-100 text-gray-800 border-gray-300 hover:border-gray-400"
-            >
-              {selectedBranch || 'Select Branch...'}
-              <ChevronsUpDown className="ml-2 w-5 h-5 opacity-50 shrink-0" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[300px] p-0 border border-gray-300 rounded-md">
-            <Command>
-              <CommandInput placeholder="Search branch..." />
-              <CommandList>
-                <CommandEmpty>No branch found.</CommandEmpty>
-                <CommandGroup>
-                  {branches.map((branch) => (
-                    <CommandItem
-                      key={branch}
-                      value={branch}
-                      onSelect={(currentValue) => {
-                        setSelectedBranch(
-                          currentValue === selectedBranch ? '' : currentValue,
-                        );
-                        setOpenBranch(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          'mr-2 h-5 w-5',
-                          selectedBranch === branch ? 'opacity-100' : (
-                            'opacity-0'
-                          ),
-                        )}
-                      />
-                      {branch}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
       </div>
 
-      {/* Charts Section */}
       <div className="flex flex-col gap-8 md:flex-row">
-        <div className="flex flex-col w-full max-w-[700px] p-6 rounded-md bg-white shadow-md">
-          <h3 className="mb-4 text-lg font-bold text-center">
-            Cutoff Marks Data - {selectedBranch} at {selectedCollege}
-          </h3>
+        <div className="flex flex-col w-full max-w-[700px] p-6 rounded-md bg-white">
+          <div className="flex justify-between w-full">
+            <h3 className="mb-4 text-lg font-bold text-center">
+              Cutoff Marks Data of {selectedBranch}
+            </h3>
+            <Popover
+              open={openBranch}
+              onOpenChange={setOpenBranch}
+            >
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openBranch}
+                  className="w-[200px] justify-between bg-gray-100 text-gray-800 border-gray-300 hover:border-gray-400"
+                >
+                  {selectedBranch || 'Select Branch...'}
+                  <ChevronsUpDown className="ml-2 w-5 h-5 opacity-50 shrink-0" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0 border border-gray-300 rounded-md">
+                <Command>
+                  <CommandInput placeholder="Search branch..." />
+                  <CommandList>
+                    <CommandEmpty>No branch found.</CommandEmpty>
+                    <CommandGroup>
+                      {branches.map((branch) => (
+                        <CommandItem
+                          key={branch}
+                          value={branch}
+                          onSelect={(currentValue) => {
+                            setSelectedBranch(
+                              currentValue === selectedBranch ? '' : (
+                                currentValue
+                              ),
+                            );
+                            setOpenBranch(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              'mr-2 h-5 w-5',
+                              selectedBranch === branch ? 'opacity-100' : (
+                                'opacity-0'
+                              ),
+                            )}
+                          />
+                          {branch}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
+
           <BarChart
             data={data}
-            options={options}
-            height={400} // Increased height for better visibility
-            width={700} // Increased width to make it prominent
+            height={400}
+            width={800}
           />
         </div>
 
-        <div className="flex flex-col w-full max-w-[400px] p-6 rounded-md bg-white shadow-md">
-          <h3 className="mb-4 text-lg font-bold text-center">
-            Placement Data of {selectedCollege}
-          </h3>
+        <div className="flex flex-col w-full max-w-[400px] p-4 rounded-md bg-white items-center">
+          <h3 className="mb-4 text-lg font-bold text-center">Placement Data</h3>
           <PieChart data={placementData} />
         </div>
+      </div>
+
+      <div className="flex flex-col w-full max-w-[700px] p-6 rounded-md bg-white">
+        <div className="flex justify-between w-full">
+          <h3 className="mb-4 text-lg font-bold text-center">
+            Available Seats of {selectedBranch}
+          </h3>
+        </div>
+
+        <BarChart
+          data={seatData}
+          height={400}
+          width={800}
+        />
       </div>
     </div>
   );

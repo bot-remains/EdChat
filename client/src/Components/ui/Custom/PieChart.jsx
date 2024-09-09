@@ -12,8 +12,10 @@ const PieChart = ({ data }) => (
           position: 'bottom',
           align: 'center',
           labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRounded',
             font: {
-              size: 12,
+              size: 10,
               weight: 'bold',
             },
             color: '#333',

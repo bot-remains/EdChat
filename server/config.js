@@ -18,7 +18,6 @@ const __dirname = path.dirname(__filename);
 export const appConfig = () => {
   app
     .use(cors(corsOptions))
-    // .use(cors())
     .use(express.json())
     .use(morgan('dev'))
     .use(bodyParser.json())
