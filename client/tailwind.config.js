@@ -11,13 +11,15 @@ export default {
       },
       colors: {
         extend: {
-          primary: '#eff1f5',
-          secondary: '#1e66f5',
+          primary: '#eff1f5', //Base
+          secondary: '#1e66f5', //Blue
+          secondaryBase: '#e6e9ef',
           hoverSecondary: 'blue',
           error: '#d20f39',
           primaryShade: '#dce0e8',
           text: 'text-gray-900',
-          border: 'border-gray-200',
+          border: '#E0E0E0',
+          darkBorder: '#9ca0b0',
           secondaryText: 'text-gray-600',
         },
       },

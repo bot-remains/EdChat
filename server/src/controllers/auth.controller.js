@@ -65,8 +65,10 @@ export const signIn = AsyncHandler(async (req, res) => {
     });
 });
 
-// LogOut: Handles user logout
-export const logOut = AsyncHandler(async (req, res) => {
+// signOut: Handles user sign-out
+export const signOut = AsyncHandler(async (req, res) => {
+  console.log('Cookie delete');
+
   res
     .clearCookie('userCookie')
     .status(200)

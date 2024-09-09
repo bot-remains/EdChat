@@ -1,4 +1,4 @@
-import { Form } from '@/components/ui/form';
+import { Form } from '@/Components/ui/form';
 import PropTypes from 'prop-types';
 
 function CustomFormWrapper({ form, onSubmit, fields, button }) {

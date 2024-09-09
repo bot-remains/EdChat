@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -19,6 +19,7 @@ const formSchema = z.object({
 });
 
 function SignUp() {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,6 +35,7 @@ function SignUp() {
     {
       onSuccess: (data) => {
         console.log('Sign up successful:', data);
+        navigate('/sign-in');
       },
       onError: (error) => {
         console.error('Sign up error:', error.response?.data || error.message);

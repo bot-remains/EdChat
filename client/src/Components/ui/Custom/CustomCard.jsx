@@ -5,12 +5,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/Components/ui/card';
 import PropTypes from 'prop-types';
 
 function CustomCard({ title, description, body, footer }) {
   return (
-    <Card className="w-1/4 ">
+    <Card className="w-1/4 shadow-lg">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
