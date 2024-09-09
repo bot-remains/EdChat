@@ -1,26 +1,38 @@
-/* eslint-disable tailwindcss/classnames-order */
 /* eslint-disable tailwindcss/no-custom-classname */
+/* eslint-disable tailwindcss/classnames-order */
 import { Button } from '@/Components/ui/button';
 import { MarkdownRenderer } from '@/Components/ui/Custom/MarkDown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/Components/ui/dropdown-menu';
 import { Form, FormControl, FormField, FormItem } from '@/Components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from '@radix-ui/react-dropdown-menu';
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { Languages, Trash2 } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { Link, NavLink } from 'react-router-dom';
-import { useDebounce } from 'use-debounce'; // Install use-debounce package if not already
+import { useDebounce } from 'use-debounce';
 import { z } from 'zod';
 
 const schema = z.object({
-  statement: z.string().min(1, 'Message cannot be empty'),
+  statement: z.string().min(1, ''),
 });
 
 function Chat() {
+  const [position, setPosition] = React.useState('bottom');
   const [loading, setLoading] = useState(false);
   const [conversationHistory, setConversationHistory] = useState([]);
   const [input, setInput] = useState('');
   const [debouncedInput] = useDebounce(input, 300);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef(null);
 
   const form = useForm({
@@ -29,6 +41,7 @@ function Chat() {
       statement: '',
     },
   });
+
   const {
     handleSubmit,
     control,
@@ -39,6 +52,10 @@ function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [conversationHistory]);
 
+  const handleRefresh = () => {
+    setConversationHistory([]);
+  };
+
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
@@ -48,7 +65,7 @@ function Chat() {
 
     setConversationHistory((history) => [
       ...history,
-      { chat: data.statement, role: 'user' },
+      { role: 'user', chat: data.statement },
     ]);
     form.reset({ statement: '' });
     setInput('');
@@ -63,7 +80,7 @@ function Chat() {
         setLoading(false);
         setConversationHistory((history) => [
           ...history,
-          { chat: response.data.message, role: 'bot' },
+          { role: 'bot', chat: response.data.message },
         ]);
       })
       .catch((error) => {
@@ -72,16 +89,64 @@ function Chat() {
       });
   };
 
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+  useEffect(() => {
+    if (recognition) {
+      recognition.continuous = false;
+      recognition.lang = 'en-US';
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = (event) => {
+        const lastResult = event.results[event.resultIndex];
+        if (lastResult.isFinal) {
+          // Final result
+          const recognizedText = lastResult[0].transcript.trim();
+          setInput(recognizedText);
+          form.setValue('statement', recognizedText);
+          handleSubmit(onSubmit)();
+          setIsListening(false);
+        } else {
+          setInput(event.results[0][0].transcript);
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setIsListening(false);
+        console.log('Speech recognition error', event.error);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, [recognition, handleSubmit]);
+
+  const handleMicClick = () => {
+    if (isListening) {
+      recognition.stop();
+      setIsListening(false);
+    } else if (recognition) {
+      recognition.start();
+      setIsListening(true);
+    } else {
+      alert('Speech recognition is not supported in this browser.');
+    }
+  };
+
   return (
     <div className="overflow-hidden h-screen bg-extend-primary">
       <PanelGroup direction="horizontal">
         <Panel
           className="flex overflow-y-auto flex-col gap-3 p-5 bg-extend-secondaryBase"
           defaultSize={20}
-          minSize={12}
+          minSize={20}
           maxSize={20}
         >
-          <NavLink
+          {/* <NavLink
             to="/"
             className="mb-2 text-2xl font-bold"
           >
@@ -89,7 +154,45 @@ function Chat() {
           </NavLink>
           <Link className="p-2 rounded-md bg-extend-secondary text-extend-primary">
             History 1
-          </Link>
+          </Link> */}
+          <div className="flex justify-between text-end">
+            <button
+              onClick={() => {
+                location.reload();
+                // handleRefresh();
+              }}
+            >
+              <Trash2 className="transition-colors duration-300 cursor-pointer text-extend-text" />
+            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Languages className="transition-colors duration-300 cursor-pointer text-extend-text" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="py-2 w-36 text-gray-800 rounded-lg border shadow-lg bg-extend-secondaryBase border-extend-border"
+                style={{ animation: 'fadeIn 0.3s ease-in-out' }}
+              >
+                <DropdownMenuSeparator className="border-extend-border" />
+                <DropdownMenuRadioGroup
+                  value={position}
+                  onValueChange={setPosition}
+                >
+                  <DropdownMenuRadioItem
+                    value="English"
+                    className="px-4 py-2 rounded-md transition-colors duration-300 cursor-pointer text-extend-text"
+                  >
+                    English
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem
+                    value="Hindi"
+                    className="px-4 py-2 rounded-md transition-colors duration-300 cursor-pointer text-extend-text"
+                  >
+                    Hindi
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </Panel>
 
         <PanelResizeHandle className="cursor-col-resize" />
@@ -103,7 +206,7 @@ function Chat() {
               {conversationHistory.map((message, idx) => (
                 <div
                   key={idx}
-                  className={`max-w-[70%] p-4 shadow-2xl ${
+                  className={`max-w-[70%] p-4 shadow-xl ${
                     message.role === 'user' ?
                       'self-end rounded-l-xl rounded-br-none rounded-tr-xl bg-extend-secondary text-extend-primary'
                     : 'self-start rounded-r-xl rounded-bl-none rounded-tl-xl bg-extend-secondaryBase text-gray-800'
@@ -168,6 +271,16 @@ function Chat() {
                   )}
                 />
                 <Button
+                  onClick={handleMicClick}
+                  className={`flex justify-center items-center p-6 rounded-md transition-colors duration-300 text-extend-text ${
+                    isListening ?
+                      'text-white bg-red-600'
+                    : 'bg-gray-300 hover:bg-extend-hoverSecondary'
+                  }`}
+                >
+                  <i className="fa-solid fa-microphone"></i>
+                </Button>
+                <Button
                   disabled={isSubmitting || loading}
                   className={`rounded-md p-6 text-extend-primary transition-colors duration-300 ${
                     loading ? 'bg-gray-400' : (
@@ -181,7 +294,7 @@ function Chat() {
             </form>
           </Form>
           <p className="p-0 mt-2 text-sm text-center text-gray-400">
-            Educhat is in highly development phase, So Please check important
+            Educhat is in a highly development phase, so please check important
             information.
           </p>
         </Panel>

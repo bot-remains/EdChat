@@ -26,21 +26,16 @@ const BarChart = ({ data }) => {
         responsive: true,
         plugins: {
           legend: {
-            position: 'top',
+            position: 'bottom',
             labels: {
+              usePointStyle: true,
+              pointStyle: 'rectRounded',
               font: {
-                size: 12,
+                size: 10,
                 weight: 'bold',
               },
               color: '#333',
             },
-          },
-          title: {
-            display: false,
-            font: {
-              size: 16,
-            },
-            color: '#333',
           },
         },
         scales: {
@@ -52,6 +47,10 @@ const BarChart = ({ data }) => {
                 size: 12,
               },
             },
+            grid: {
+              borderDash: [5, 5],
+              borderColor: '#ddd',
+            },
           },
           x: {
             ticks: {
@@ -60,15 +59,8 @@ const BarChart = ({ data }) => {
                 size: 12,
               },
             },
-          },
-        },
-        options: {
-          plugins: {
-            legend: {
-              labels: {
-                position: 'bottom',
-                align: 'left',
-              },
+            grid: {
+              display: false,
             },
           },
         },
