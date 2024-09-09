@@ -1,7 +1,5 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
 /* eslint-disable tailwindcss/classnames-order */
-'use client';
-
 import { Button } from '@/Components/ui/button';
 import {
   Command,
@@ -11,6 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/Components/ui/command';
+import PieChart from '@/Components/ui/Custom/PieChart.jsx';
 import {
   Popover,
   PopoverContent,
@@ -19,8 +18,8 @@ import {
 import { cn } from '@/lib/utils';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
-import { branches, categories, colleges } from '../assets/data.js'; // Import the data
-import BarChart from './BarChart';
+import { branches, categories, colleges } from '../assets/data.js';
+import BarChart from '../Components/ui/Custom/BarChart.jsx';
 
 function Analysis() {
   const [openCollege, setOpenCollege] = React.useState(false);
@@ -50,52 +49,38 @@ function Analysis() {
     })),
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          font: {
-            size: 14,
-            weight: 'bold',
-          },
-          color: '#333',
-        },
+  const placementData = {
+    labels: Object.keys(colleges[selectedCollege]),
+    datasets: [
+      {
+        data: Object.keys(colleges[selectedCollege]).map((branch) => {
+          const placement = colleges[selectedCollege][branch]?.Placement?.[0];
+          return placement ? parseFloat(placement.replace('%', '%')) : 0;
+        }),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 206, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+        ],
+        borderWidth: 2,
+        hoverOffset: 10,
       },
-      title: {
-        display: true,
-        text: `Cutoff Marks for ${selectedBranch} - ${selectedCollege} (2020 - 2023)`,
-        font: {
-          size: 18,
-        },
-        color: '#333',
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          color: '#4B5563',
-          font: {
-            size: 12,
-          },
-        },
-      },
-      x: {
-        ticks: {
-          color: '#4B5563',
-          font: {
-            size: 12,
-          },
-        },
-      },
-    },
+    ],
   };
 
+  const options = {};
+
   return (
-    <div className="p-6 mx-auto mt-2 max-w-5xl bg-white">
-      <div className="flex justify-between mb-4">
+    <div className="p-6 mx-auto w-full">
+      <div className="flex flex-wrap gap-4 justify-between p-4">
+        {/* College Selection Popover */}
         <Popover
           open={openCollege}
           onOpenChange={setOpenCollege}
@@ -145,7 +130,7 @@ function Analysis() {
           </PopoverContent>
         </Popover>
 
-        {/* Dropdown for selecting Branch */}
+        {/* Branch Selection Popover */}
         <Popover
           open={openBranch}
           onOpenChange={setOpenBranch}
@@ -194,16 +179,28 @@ function Analysis() {
             </Command>
           </PopoverContent>
         </Popover>
-
-        {/* Dropdown for selecting Category */}
       </div>
 
-      {/* Bar Chart */}
-      <div className="p-6 rounded-md bg-extend-primary">
-        <BarChart
-          data={data}
-          options={options}
-        />
+      {/* Charts Section */}
+      <div className="flex flex-col gap-8 md:flex-row">
+        <div className="flex flex-col w-full max-w-[700px] p-6 rounded-md bg-white shadow-md">
+          <h3 className="mb-4 text-lg font-bold text-center">
+            Cutoff Marks Data - {selectedBranch} at {selectedCollege}
+          </h3>
+          <BarChart
+            data={data}
+            options={options}
+            height={400} // Increased height for better visibility
+            width={700} // Increased width to make it prominent
+          />
+        </div>
+
+        <div className="flex flex-col w-full max-w-[400px] p-6 rounded-md bg-white shadow-md">
+          <h3 className="mb-4 text-lg font-bold text-center">
+            Placement Data of {selectedCollege}
+          </h3>
+          <PieChart data={placementData} />
+        </div>
       </div>
     </div>
   );

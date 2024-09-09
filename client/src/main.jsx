@@ -1,4 +1,3 @@
-import { LineChart } from 'lucide-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -42,10 +41,6 @@ const router = createBrowserRouter([
       {
         path: 'analysis',
         element: <Analysis />,
-      },
-      {
-        path: 'bar',
-        element: <LineChart />,
       },
     ],
   },
