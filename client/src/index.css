@@ -7,6 +7,14 @@
   }
 }
 
+html {
+  scrollbar-width: none;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 0px; /* Width of the scrollbar */
 }

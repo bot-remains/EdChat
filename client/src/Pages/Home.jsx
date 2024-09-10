@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/classnames-order */
 /* eslint-disable tailwindcss/no-custom-classname */
 import { Card, CardContent, CardHeader } from '@/Components/ui/card';
 
@@ -119,7 +120,7 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="py-8 bg-gray-800 text-extend-primary">
+      <footer className="py-8 bg-[#292c3c] text-extend-primary">
         <div className="flex justify-between items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div>
             <h3 className="text-lg font-semibold">

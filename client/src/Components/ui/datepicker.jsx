@@ -13,7 +13,7 @@ import {
 } from '@/Components/ui/popover';
 import { cn } from '@/lib/utils';
 
-export function DatePickerDemo() {
+export function DatePicker() {
   const [date, setDate] = React.useState();
 
   return (

@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable tailwindcss/no-custom-classname */
-/* eslint-disable tailwindcss/classnames-order */
 import { Button } from '@/Components/ui/button';
 import {
   Command,
@@ -26,10 +23,14 @@ import BarChart from '../Components/ui/Custom/BarChart.jsx';
 function Analysis() {
   const [openCollege, setOpenCollege] = useState(false);
   const [openBranch, setOpenBranch] = useState(false);
+  const [openSeatBranch, setOpenSeatBranch] = useState(false);
   const [selectedCollege, setSelectedCollege] = useState(
     'Rajasthan Institute of Technology',
   );
   const [selectedBranch, setSelectedBranch] = useState('Computer Science');
+  const [selectedSeatBranch, setSelectedSeatBranch] =
+    useState('Computer Science');
+  const [selectedSeat, setSelectedSeat] = useState('Computer Science');
   const [collegeData, setCollegeData] = useState(null);
 
   const fetchData = useCallback(async () => {
@@ -39,21 +40,34 @@ function Analysis() {
         { withCredentials: true },
       );
       setCollegeData(response.data);
-      console.log(collegeData);
     } catch (err) {
       console.error('Failed to fetch data:', err);
     }
   }, [selectedCollege, selectedBranch]);
 
+  const fetchSeatData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `/api/v1/college/seats/${selectedCollege}/branch/${selectedSeatBranch}`,
+        { withCredentials: true },
+      );
+      setSelectedSeat(response.data);
+      console.log(selectedSeat);
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+    }
+  }, [selectedCollege, selectedSeatBranch]);
+
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+    fetchSeatData();
+  }, [fetchData, fetchSeatData]);
 
   const getDataset = (dataKey, labels, backgroundColors) => ({
     labels,
     datasets: categories.map((category, index) => ({
       label: category,
-      data: collegeData?.[dataKey]?.[category] || [],
+      data: collegeData?.branchData?.[category]?.[dataKey] || [],
       backgroundColor: backgroundColors[index],
       borderColor: backgroundColors[index],
       borderWidth: 1,
@@ -71,34 +85,39 @@ function Analysis() {
     ['2020', '2021', '2022', '2023'],
     chartColors,
   );
-  const seatData = getDataset(
-    'seats',
-    ['2020', '2021', '2022', '2023'],
-    chartColors,
-  );
-
-  const placementData = {
-    labels: Object.keys(collegeData?.placements || {}),
+  const seatData = {
+    labels: categories,
     datasets: [
       {
-        data: Object.keys(collegeData?.placements || {}).map((branch) => {
-          const placement = collegeData?.placements?.[branch]?.rate;
-          return placement ? parseFloat(placement.replace('%', '')) : 0;
-        }),
+        label: 'Available Seats',
+        data: categories.map((category) => selectedSeat?.[category] || 0),
+        backgroundColor: chartColors,
+        borderColor: chartColors,
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const placementData = {
+    labels: Object.keys(collegeData?.placement || {}),
+    datasets: [
+      {
+        data: Object.values(collegeData?.placement || {}).map((value) =>
+          parseFloat(value.replace('%', '')),
+        ), // Extract placement percentages
         backgroundColor: [
-          'rgba(255, 99, 132, 0.7)',
           'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 99, 132, 0.7)',
           'rgba(255, 206, 86, 0.7)',
           'rgba(75, 192, 192, 0.7)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
+          'rgba(255, 99, 132, 1)',
           'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)',
         ],
         borderWidth: 2,
-        hoverOffset: 10,
       },
     ],
   };
@@ -231,18 +250,70 @@ function Analysis() {
         </div>
       </div>
 
-      <div className="flex flex-col w-full max-w-[700px] p-6 rounded-md bg-white">
-        <div className="flex justify-between w-full">
-          <h3 className="mb-4 text-lg font-bold text-center">
-            Available Seats of {selectedBranch}
-          </h3>
-        </div>
+      <div className="flex flex-col gap-8 md:flex-row">
+        <div className="flex flex-col w-full max-w-[700px] p-6 rounded-md bg-white">
+          <div className="flex justify-between w-full">
+            <h3 className="mb-4 text-lg font-bold text-center">
+              Available Seats Data of {selectedSeatBranch}
+            </h3>
+            <Popover
+              open={openSeatBranch}
+              onOpenChange={setOpenSeatBranch}
+            >
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openSeatBranch}
+                  className="w-[200px] justify-between bg-gray-100 text-gray-800 border-gray-300 hover:border-gray-400"
+                >
+                  {selectedSeatBranch || 'Select Branch...'}
+                  <ChevronsUpDown className="ml-2 w-5 h-5 opacity-50 shrink-0" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0 border border-gray-300 rounded-md">
+                <Command>
+                  <CommandInput placeholder="Search branch..." />
+                  <CommandList>
+                    <CommandEmpty>No branch found.</CommandEmpty>
+                    <CommandGroup>
+                      {branches.map((branch) => (
+                        <CommandItem
+                          key={branch}
+                          value={branch}
+                          onSelect={(currentValue) => {
+                            setSelectedSeatBranch(
+                              currentValue === selectedSeatBranch ? '' : (
+                                currentValue
+                              ),
+                            );
+                            setOpenSeatBranch(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              'mr-2 h-5 w-5',
+                              selectedSeatBranch === branch ? 'opacity-100' : (
+                                'opacity-0'
+                              ),
+                            )}
+                          />
+                          {branch}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
 
-        <BarChart
-          data={seatData}
-          height={400}
-          width={800}
-        />
+          <BarChart
+            data={seatData}
+            height={400}
+            width={800}
+          />
+        </div>
       </div>
     </div>
   );
