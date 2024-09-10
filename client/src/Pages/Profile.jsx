@@ -1,5 +1,6 @@
 /* eslint-disable tailwindcss/classnames-order */
 import { Button } from '@/Components/ui/button';
+import { DatePicker } from '@/Components/ui/datepicker'; // Assuming you have a DatePicker component
 import { Form, FormItem, FormMessage } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
@@ -20,6 +21,7 @@ function Profile() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(schema),
@@ -31,32 +33,34 @@ function Profile() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 via-gray-100 to-gray-200">
-      <div className="flex p-10 space-x-10 w-full max-w-5xl bg-white rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105">
-        <div className="flex justify-center items-center w-1/3">
-          <div className="relative">
-            <img
-              className="object-cover w-40 h-40 rounded-full shadow-lg"
-              src="https://via.placeholder.com/150"
-              alt="User Profile"
-            />
-            <Button
-              variant="ghost"
-              className="absolute right-0 bottom-0 p-2 text-white bg-blue-600 rounded-full shadow-lg transition-all duration-300 hover:bg-blue-700"
-            >
-              <i className="fa-solid fa-camera"></i>
-            </Button>
-          </div>
+    <div className="flex flex-col items-center p-6 min-h-screen bg-gradient-to-br from-blue-100 via-gray-100 to-gray-200">
+      <div className="flex overflow-hidden flex-col items-start w-full max-w-4xl bg-white rounded-xl shadow-lg md:flex-row md:items-center">
+        {/* Profile Picture */}
+        <div className="flex relative justify-center items-center p-6 w-full md:w-1/3">
+          <img
+            className="object-cover w-32 h-32 rounded-full shadow-lg md:w-40 md:h-40"
+            src="https://via.placeholder.com/150"
+            alt="User Profile"
+          />
+          {/* <Button
+            variant="ghost"
+            className="absolute right-0 bottom-0 p-2 text-white bg-blue-600 rounded-full shadow-lg transition-all duration-300 hover:bg-blue-700"
+          >
+            <i className="fa-solid fa-camera"></i>
+          </Button> */}
         </div>
 
-        <div className="w-2/3">
-          <h2 className="text-4xl font-semibold text-gray-900">Edit Profile</h2>
+        {/* Form */}
+        <div className="p-6 space-y-6 w-full md:w-2/3">
+          <h2 className="mb-6 text-3xl font-semibold text-gray-900 md:text-4xl">
+            Edit Profile
+          </h2>
           <Form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-8"
+            className="space-y-6"
           >
-            <div className="flex space-x-6">
-              <FormItem className="w-1/2">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <FormItem>
                 <Label className="font-medium text-gray-700">First Name</Label>
                 <Input
                   {...register('firstName')}
@@ -70,7 +74,7 @@ function Profile() {
                 )}
               </FormItem>
 
-              <FormItem className="w-1/2">
+              <FormItem>
                 <Label className="font-medium text-gray-700">Last Name</Label>
                 <Input
                   {...register('lastName')}
@@ -84,9 +88,20 @@ function Profile() {
                 )}
               </FormItem>
             </div>
-            {/* <FormItem>
+
+            <FormItem>
               <Label className="font-medium text-gray-700">Date of Birth</Label>
-              <DatePickerDemo />
+              <DatePicker
+                {...register('dateOfBirth')}
+                control={control}
+                className={`p-3 w-full rounded-lg border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500`}
+                error={errors.dateOfBirth}
+              />
+              {errors.dateOfBirth && (
+                <FormMessage className="mt-1 text-sm text-red-500">
+                  {errors.dateOfBirth.message}
+                </FormMessage>
+              )}
             </FormItem>
 
             <FormItem>
@@ -110,7 +125,7 @@ function Profile() {
               className="py-3 w-full text-white bg-blue-600 rounded-lg shadow-md transition-colors duration-300 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {isSubmitting ? 'Submitting...' : 'Save Changes'}
-            </Button> */}
+            </Button>
           </Form>
         </div>
       </div>

@@ -1,24 +1,16 @@
+/* eslint-disable tailwindcss/migration-from-tailwind-2 */
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable tailwindcss/classnames-order */
 import { Button } from '@/Components/ui/button';
 import { MarkdownRenderer } from '@/Components/ui/Custom/MarkDown';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu';
 import { Form, FormControl, FormField, FormItem } from '@/Components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from '@radix-ui/react-dropdown-menu';
 import axios from 'axios';
-import { Languages, Trash2 } from 'lucide-react';
+import { Mic, MoveLeft, Trash } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { NavLink } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
 import { z } from 'zod';
 
@@ -146,52 +138,22 @@ function Chat() {
           minSize={20}
           maxSize={20}
         >
-          {/* <NavLink
-            to="/"
-            className="mb-2 text-2xl font-bold"
-          >
-            EduChat
-          </NavLink>
-          <Link className="p-2 rounded-md bg-extend-secondary text-extend-primary">
-            History 1
-          </Link> */}
-          <div className="flex justify-between text-end">
+          <div className="flex justify-between items-center align-middle text-end">
+            <NavLink
+              to="/"
+              className="flex items-center mb-2 text-sm font-bold text-blue-600 underline"
+            >
+              <MoveLeft className="mr-2 size-5" />
+              back to home
+              {/* EduChat */}
+            </NavLink>
             <button
               onClick={() => {
                 location.reload();
-                // handleRefresh();
               }}
             >
-              <Trash2 className="transition-colors duration-300 cursor-pointer text-extend-text" />
+              <Trash className="transition-colors duration-300 cursor-pointer size-4 text-extend-text" />
             </button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Languages className="transition-colors duration-300 cursor-pointer text-extend-text" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="py-2 w-36 text-gray-800 rounded-lg border shadow-lg bg-extend-secondaryBase border-extend-border"
-                style={{ animation: 'fadeIn 0.3s ease-in-out' }}
-              >
-                <DropdownMenuSeparator className="border-extend-border" />
-                <DropdownMenuRadioGroup
-                  value={position}
-                  onValueChange={setPosition}
-                >
-                  <DropdownMenuRadioItem
-                    value="English"
-                    className="px-4 py-2 rounded-md transition-colors duration-300 cursor-pointer text-extend-text"
-                  >
-                    English
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem
-                    value="Hindi"
-                    className="px-4 py-2 rounded-md transition-colors duration-300 cursor-pointer text-extend-text"
-                  >
-                    Hindi
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </Panel>
 
@@ -271,15 +233,18 @@ function Chat() {
                   )}
                 />
                 <Button
+                  disabled={isSubmitting || loading}
                   onClick={handleMicClick}
-                  className={`flex justify-center items-center p-6 rounded-md transition-colors duration-300 text-extend-text ${
-                    isListening ?
-                      'text-white bg-red-600'
-                    : 'bg-gray-300 hover:bg-extend-hoverSecondary'
-                  }`}
+                  className={`rounded-md p-6 text-extend-primary transition-colors duration-300 ${
+                    loading ? 'bg-gray-400'
+                    : isListening ?
+                      'bg-red-500 hover:bg-red-600' // Alert color when microphone is active
+                    : 'bg-gray-600 hover:bg-gray-700'
+                  } ${isSubmitting ? 'opacity-70' : ''}`}
                 >
-                  <i className="fa-solid fa-microphone"></i>
+                  <Mic className="size-5" />
                 </Button>
+
                 <Button
                   disabled={isSubmitting || loading}
                   className={`rounded-md p-6 text-extend-primary transition-colors duration-300 ${
@@ -293,7 +258,7 @@ function Chat() {
               </div>
             </form>
           </Form>
-          <p className="p-0 mt-2 text-sm text-center text-gray-400">
+          <p className="p-0 mt-2 text-sm text-center text-gray-600">
             Educhat is in a highly development phase, so please check important
             information.
           </p>
